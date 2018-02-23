@@ -1,0 +1,8 @@
+
+
+
+
+enum SpanLoggingRepresentation {
+    Json,
+    KeyValue
+}
