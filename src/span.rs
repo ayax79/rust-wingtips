@@ -26,18 +26,18 @@ impl FromStr for SpanPurpose {
     }
 }
 
-#[derive(Debug, PartialEq, Deserialize)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Span {
-    trace_id: String,
-    parent_span_id: String,
-    span_id: String,
-    span_name: String,
-    sampleable: bool,
-    user_id: String,
-    span_purpose: SpanPurpose,
-    span_start_time_epoch_micros: u64,
-    duration_nanos: u64,
+    pub trace_id: String,
+    pub parent_span_id: String,
+    pub span_id: String,
+    pub span_name: String,
+    pub sampleable: bool,
+    pub user_id: String,
+    pub span_purpose: SpanPurpose,
+    pub span_start_time_epoch_micros: u64,
+    pub duration_nanos: u64,
 }
 
 impl Span {
@@ -47,6 +47,9 @@ impl Span {
                 // split by = sign and then trim, giving us a collection of key value pairs
                 let kv: Vec<&str> = pair.split("=").map(|s| s.trim())
                     .collect();
+                // split into a tuple if there are two items
+                // wrap in a vec and allow flap map to filter out the entries with
+                // less than two items
                 if kv.len() == 2 {
                     vec![(kv[0], kv[1])]
                 } else {
